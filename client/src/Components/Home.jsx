@@ -115,7 +115,7 @@ const Home = () => {
                 >
                     Next
                 </button>
-                {page} of {data?.total}
+                {page} of {Math.ceil(data.total / data.perPage)}
             </div>
 
             {/* Add Modal */}
