@@ -8,7 +8,8 @@ const ClubSchema = new mongoose.Schema({
 
 const NationalTeamSchema = new mongoose.Schema({
     name: { type: String, required: true },
-    from: { type: Date, required: true }
+    from: { type: Date, required: true },
+    type: { type: String }
 });
 
 const PlayerSchema = new mongoose.Schema({
@@ -24,10 +25,5 @@ const PlayerSchema = new mongoose.Schema({
     previousClubs: [ClubSchema],
     rating: { type: Number, min: 1, max: 5 }
 });
-
-// Models for related collections
-const Position = mongoose.model('Position', new mongoose.Schema({ name: String }));
-const Club = mongoose.model('Club', new mongoose.Schema({ name: String }));
-const Country = mongoose.model('Country', new mongoose.Schema({ name: String }));
 
 module.exports = mongoose.model('Player', PlayerSchema);

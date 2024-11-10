@@ -30,6 +30,9 @@ mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
         console.log('Connected to MongoDB');
 
         app.use('/api/club', require('./routes/ClubTeam'));
+        app.use('/api/player', require('./routes/Player'));
+        app.use('/api/position', require('./routes/Position'));
+        app.use('/api/country', require('./routes/Country'));
 
         app.listen(PORT, () => {
             console.log(`Server is running on port ${PORT}`);
