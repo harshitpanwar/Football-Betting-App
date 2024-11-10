@@ -16,11 +16,11 @@ export const editClub = async ({id, name}) => {
 }
 
 export const deleteClub = async (id) => {
-    const { data } = await axios.delete(`/api/club/${id}`);
+    const { data } = await axios.delete(`/club/${id}`);
     return data;
 }
 
 export const addClub = async ({name}) => {
-    const { data } = await axios.post(`/api/club`, {name});
+    const { data } = await axios.post(`/club`, {name});
     return data;
 }
