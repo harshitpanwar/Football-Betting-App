@@ -1,8 +1,11 @@
 const mongoose = require('mongoose');
 const Country = require('./models/Country');
 const Club = require('./models/ClubTeam');
+const Position = require('./models/Position');
 
 require('dotenv').config();
+
+const positions = ['attacking midfield', 'Center Forward', 'central midfield', 'Centre Back', 'Coach', 'Defensive Midfield', 'Goalkeeper', 'Left Back', 'Left Winger', 'Right Back', 'Right Winger', 'Second Stricker'];
 const countries = [
     "Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Antigua and Barbuda", "Argentina", "Armenia", 
     "Australia", "Austria", "Azerbaijan", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", 
@@ -167,6 +170,8 @@ const seedDatabase = async () => {
         await Club.deleteMany({});
         console.log("Existing data for Clubs cleared");
 
+        await Position.deleteMany({});
+
         const countryData = countries.map(country => ({
             country,
             status: 'Active' 
@@ -177,10 +182,16 @@ const seedDatabase = async () => {
             status: 'Active'
         }));
 
+        const positionData = positions.map(position => ({
+            position
+        }));
+
         await Country.insertMany(countryData);
         console.log("Database seeded with countries");
         await Club.insertMany(clubData);
         console.log("Database seeded with clubs");
+        await Position.insertMany(positionData);
+        console.log("Database seeded with positions");
 
         mongoose.connection.close();
     } catch (error) {
