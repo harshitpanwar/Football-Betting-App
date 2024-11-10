@@ -30,7 +30,7 @@ const countries = [
     "Ukraine", "United Arab Emirates", "United Kingdom", "United States", "Uruguay", "Uzbekistan", 
     "Vanuatu", "Vatican City", "Venezuela", "Vietnam", "Yemen", "Zambia", "Zimbabwe"
 ];
-const clubs = ["Italiano","Klagenfurt","Aalborg","Aarhus","Abahani","Aberdeen","Abha","AC Milan",
+const clubs = ["A Italiano","A Klagenfurt","Aalborg","Aarhus","Abahani","Aberdeen","Abha","AC Milan",
     "Academica","Academico Viseu","Adana Demirspor","Admira","AEK","AEK Larnaca","Aguilas","Ajax",
     "Akhmat Grozny","Akron","Al Ahli (Egy)","Al Ahli (KSA)","Al Ain (UAE)","Al Akhdoud",
     "Al Batin (KSA)","Al Ettifaq","Al Feiha (KSA)","Al Gharafa (Qat)","Al Hazem","Al Hilal (KSA)",
