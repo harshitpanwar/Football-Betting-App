@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { getClubs, addClub, editClub, deleteClub } from '../api/Clubs';
 
 const Home = () => {
     const [page, setPage] = useState(1);
     const [search, setSearch] = useState('');
+    const [searchDebounce, setSearchDebounce] = useState('');
     const [showAddModal, setShowAddModal] = useState(false);
     const [showEditModal, setShowEditModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -13,9 +14,16 @@ const Home = () => {
     const queryClient = useQueryClient();
 
     const { isLoading, error, data } = useQuery({
-        queryKey: ['clubs', page, search],
+        queryKey: ['clubs', page, searchDebounce],
         queryFn: () => getClubs({ page, search }),
     });
+
+    useEffect(() => {
+        const timeOutId = setTimeout(() => {
+            setSearchDebounce(search);
+        }, 1000);
+        return () => clearTimeout(timeOutId);
+    }, [search]);
 
     const addClubMutation = useMutation({
         mutationFn: addClub,
@@ -68,6 +76,7 @@ const Home = () => {
                     placeholder="Search clubs..."
                     className="border border-gray-400 p-1"
                     value={search}
+                    autoFocus
                     onChange={(e) => setSearch(e.target.value)}
                 />
                 <button
