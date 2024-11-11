@@ -171,6 +171,7 @@ const seedDatabase = async () => {
         console.log("Existing data for Clubs cleared");
 
         await Position.deleteMany({});
+        console.log("Existing data for Positions cleared");
 
         const countryData = countries.map(country => ({
             country,

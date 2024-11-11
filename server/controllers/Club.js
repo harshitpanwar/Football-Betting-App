@@ -34,7 +34,9 @@ module.exports = {
             const clubs = await Club.find({
                 name: { $regex: options.search, $options: 'i' }
             }).skip(options.limit * (options.page - 1)).limit(options.limit);
-            const total = await Club.countDocuments();
+            const total = await Club.find({
+                name: { $regex: options.search, $options: 'i' }
+            }).countDocuments();
             return res.status(200).send({
                 clubs,
                 total,
