@@ -48,6 +48,13 @@ const AddPlayer = () => {
         }));
     };
 
+    const handleAddNationalTeam = () => {
+        setPlayer(prevState => ({
+            ...prevState,
+            nationalTeams: [...prevState.nationalTeams, { name: '', from: '', type: '' }]
+        }));
+    };
+    
     const handleInputChange = (e, field, index = null, subfield = null) => {
         if (index !== null && subfield) {
             const updatedArray = [...player[field]];
@@ -182,6 +189,13 @@ const AddPlayer = () => {
                         />
                     </div>
                 ))}
+                <button
+                    type="button"
+                    onClick={handleAddNationalTeam}
+                    className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                >
+                    Add Previous National Team
+                </button>
             </div>
             <div>
                 <label className="font-semibold text-gray-700">Previous Clubs:</label>
