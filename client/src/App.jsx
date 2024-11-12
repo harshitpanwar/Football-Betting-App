@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Header from './Components/Header';
 import Home from './Components/Home';
 import AddPlayer from './Components/AddPlayer';
-import TestForm from './Components/TestForm';
 
 function App() {
 
@@ -14,7 +13,6 @@ function App() {
         <Routes>
           <Route path='/' element={<Home/>} />
           <Route path='/addplayer' element={<AddPlayer/>} />
-          <Route path='/testform' element={<TestForm/>} />
         </Routes>
       </Router>
     </div>
