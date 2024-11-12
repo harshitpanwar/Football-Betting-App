@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { getClubs, addClub, editClub, deleteClub } from '../api/Clubs';
-import { Table, TableHead, TableRow, TableBody, TableCell } from "../components/ui/table";
-import { Button } from "../components/ui/button";
-import { Input } from "../components/ui/input";
+import { Table, TableHead, TableRow, TableBody, TableCell } from "../Components/ui/table";
+import { Button } from "../Components/ui/button";
+import { Input } from "../Components/ui/input";
 import { Edit, Trash2 } from "lucide-react";
 import Loader from './Loader/Loader';
 
