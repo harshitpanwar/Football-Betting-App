@@ -4,6 +4,9 @@ import { getActiveClubs } from '../api/Clubs';
 import { getPositions } from '../api/Position';
 import { getCountries } from '../api/Country';
 import { savePlayerData } from '../api/Player';
+import Loader from './Loader/Loader';
+import { Button } from './ui/button';
+import { Input } from './ui/input';
 
 const AddPlayer = () => {
 
@@ -23,10 +26,7 @@ const AddPlayer = () => {
     });
 
     const savePlayerDataMutation = useMutation({
-        mutationFn: savePlayerData,
-        onSuccess: () => {
-            console.log('Player saved successfully');
-        }
+        mutationFn: savePlayerData
     })
 
     // Initial player state
@@ -63,11 +63,9 @@ const AddPlayer = () => {
         } else {
             setPlayer({ ...player, [field]: e.target.value });
         }
-        console.log(player);
     };
     const handleClubInputChange = (e, field, subfield) => {
         setPlayer({ ...player, [field]: { ...player[field], [subfield]: e.target.value } });
-        console.log(player);
     };
 
     const handleSubmit = (e) => {
@@ -83,7 +81,7 @@ const AddPlayer = () => {
         <form onSubmit={handleSubmit} className="max-w-2xl mx-auto p-6 bg-white shadow-md rounded-lg space-y-4">
             <div className="flex flex-col">
                 <label className="font-semibold text-gray-700">Name:</label>
-                <input
+                <Input
                     type="text"
                     value={player.name}
                     onChange={(e) => handleInputChange(e, 'name')}
@@ -93,7 +91,7 @@ const AddPlayer = () => {
             </div>
             <div className="flex flex-col">
                 <label className="font-semibold text-gray-700">Date of Birth:</label>
-                <input
+                <Input
                     type="date"
                     value={player.dateOfBirth}
                     onChange={(e) => handleInputChange(e, 'dateOfBirth')}
@@ -129,7 +127,7 @@ const AddPlayer = () => {
                     ))}
                 </select>
                 <label className="font-semibold text-gray-700 mt-2">From:</label>
-                <input
+                <Input
                     type="date"
                     value={player.currentClub.from}
                     onChange={(e) => handleClubInputChange(e, 'currentClub', 'from')}
@@ -180,7 +178,7 @@ const AddPlayer = () => {
                             }
                         </select>
                         <label className="font-semibold text-gray-700">From:</label>
-                        <input
+                        <Input
                             type="date"
                             value={team.from}
                             onChange={(e) => handleInputChange(e, 'nationalTeams', index, 'from')}
@@ -189,13 +187,13 @@ const AddPlayer = () => {
                         />
                     </div>
                 ))}
-                <button
+                <Button
                     type="button"
                     onClick={handleAddNationalTeam}
-                    className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    className="mt-2 px-4 py-2 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
                 >
                     Add Previous National Team
-                </button>
+                </Button>
             </div>
             <div>
                 <label className="font-semibold text-gray-700">Previous Clubs:</label>
@@ -213,7 +211,7 @@ const AddPlayer = () => {
                             ))}
                         </select>
                         <label className="font-semibold text-gray-700">From:</label>
-                        <input
+                        <Input
                             type="date"
                             value={club.from}
                             onChange={(e) => handleInputChange(e, 'previousClubs', index, 'from')}
@@ -221,7 +219,7 @@ const AddPlayer = () => {
                             required
                         />
                         <label className="font-semibold text-gray-700">To:</label>
-                        <input
+                        <Input
                             type="date"
                             value={club.to}
                             onChange={(e) => handleInputChange(e, 'previousClubs', index, 'to')}
@@ -230,17 +228,17 @@ const AddPlayer = () => {
                         />
                     </div>
                 ))}
-                <button
+                <Button
                     type="button"
                     onClick={handleAddPreviousClub}
-                    className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    className="mt-2 px-4 py-2 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
                 >
                     Add Previous Club
-                </button>
+                </Button>
             </div>
             <div className="flex flex-col">
                 <label className="font-semibold text-gray-700">Rating:</label>
-                <input
+                <Input
                     type="number"
                     min="1"
                     max="5"
@@ -250,12 +248,12 @@ const AddPlayer = () => {
                     required
                 />
             </div>
-            <button
+            <Button
                 type="submit"
-                className="w-full px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400"
+                className="w-full px-4 py-2 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400"
             >
                 Save Player
-            </button>
+            </Button>
             {savePlayerDataMutation.isError && <div>Error saving player</div>}
             {savePlayerDataMutation.isPending && <div>Saving player...</div>}
             {savePlayerDataMutation.isSuccess && <div>Player saved successfully</div>}
