@@ -2,13 +2,25 @@ import React, { useState } from 'react'
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { getActiveClubs } from '../api/Clubs';
 import { getPositions } from '../api/Position';
-import { getCountries } from '../api/Country';
+import { getCountries, getNationalTeams } from '../api/Country';
 import { savePlayerData } from '../api/Player';
 import Loader from './Loader/Loader';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 
 const AddPlayer = () => {
+
+        const [player, setPlayer] = useState({
+            name: '',
+            dateOfBirth: '',
+            position: '',
+            currentClub: { club: '', from: '' },
+            country: '',
+            nationalTeams: [{ name: '', from: '', type: '', teams: [], disabled: true }],
+            previousClubs: [{ name: '', from: '', to: '' }],
+            rating: ''
+        });
+
 
     const { isLoading: clubsDataLoading, error: clubsDataError, data: clubsData } = useQuery({
         queryKey: ['clubs'],
@@ -29,17 +41,14 @@ const AddPlayer = () => {
         mutationFn: savePlayerData
     })
 
-    // Initial player state
-    const [player, setPlayer] = useState({
-        name: '',
-        dateOfBirth: '',
-        position: '',
-        currentClub: { club: '', from: '' },
-        country: '',
-        nationalTeams: [{ name: '', from: '', type: '' }],
-        previousClubs: [{ name: '', from: '', to: '' }],
-        rating: ''
-    });
+    const fetchAllNationalTeams = async (country, index) => {
+        const teams = await getNationalTeams(country);
+        const teamsArray = teams.map(team => team.type);
+        const updatedArray = [...player.nationalTeams];
+        updatedArray[index].teams = teamsArray;
+        updatedArray[index].disabled = false;
+        setPlayer({ ...player, nationalTeams: updatedArray });
+    }
 
     const handleAddPreviousClub = () => {
         setPlayer(prevState => ({
@@ -51,7 +60,7 @@ const AddPlayer = () => {
     const handleAddNationalTeam = () => {
         setPlayer(prevState => ({
             ...prevState,
-            nationalTeams: [...prevState.nationalTeams, { name: '', from: '', type: '' }]
+            nationalTeams: [...prevState.nationalTeams, { name: '', from: '', type: '', teams: [], disabled: true }]
         }));
     };
     
@@ -155,7 +164,10 @@ const AddPlayer = () => {
                     <div key={index} className="flex items-center space-x-2 mb-2">
                         <select
                             value={team.name}
-                            onChange={(e) => handleInputChange(e, 'nationalTeams', index, 'name')}
+                            onChange={(e) => {
+                                handleInputChange(e, 'nationalTeams', index, 'name')
+                                fetchAllNationalTeams(team.name, index);
+                            }}
                             className="border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
                             required
                         >
@@ -170,9 +182,9 @@ const AddPlayer = () => {
                             className="border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
                             required
                         >
-                            <option value="">Select National Team Type</option>
+                            <option value="" disabled={team.disabled}>Select National Team Type</option>
                             {
-                                ['U-17', 'U-19', 'U-21', 'A'].map(type => (
+                                team.teams.map(type => (
                                     <option key={type} value={type}>{type}</option>
                                 ))
                             }

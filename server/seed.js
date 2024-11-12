@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const Country = require('./models/Country');
 const Club = require('./models/ClubTeam');
 const Position = require('./models/Position');
+const NationalTeam = require('./models/NationalTeams');
 
 require('dotenv').config();
 
@@ -33,6 +34,206 @@ const countries = [
     "Ukraine", "United Arab Emirates", "United Kingdom", "United States", "Uruguay", "Uzbekistan", 
     "Vanuatu", "Vatican City", "Venezuela", "Vietnam", "Yemen", "Zambia", "Zimbabwe"
 ];
+
+const nationalTeams = [
+    { Afghanistan: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Albania: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Algeria: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Andorra: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Angola: ['U-17', 'U-19', 'U-21', 'A'] },
+    { "Antigua and Barbuda": ['U-17', 'U-19', 'U-21', 'A'] },
+    { Argentina: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Armenia: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Australia: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Austria: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Azerbaijan: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Bahrain: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Bangladesh: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Barbados: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Belarus: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Belgium: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Belize: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Benin: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Bhutan: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Bolivia: ['U-17', 'U-19', 'U-21', 'A'] },
+    { "Bosnia and Herzegovina": ['U-17', 'U-19', 'U-21', 'A'] },
+    { Botswana: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Brazil: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Brunei: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Bulgaria: ['U-17', 'U-19', 'U-21', 'A'] },
+    { "Burkina Faso": ['U-17', 'U-19', 'U-21', 'A'] },
+    { Burundi: ['U-17', 'U-19', 'U-21', 'A'] },
+    { "Cabo Verde": ['U-17', 'U-19', 'U-21', 'A'] },
+    { Cambodia: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Cameroon: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Canada: ['U-17', 'U-19', 'U-21', 'A'] },
+    { "Central African Republic": ['U-17', 'U-19', 'U-21', 'A'] },
+    { Chad: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Chile: ['U-17', 'U-19', 'U-21', 'A'] },
+    { China: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Colombia: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Comoros: ['U-17', 'U-19', 'U-21', 'A'] },
+    { "Congo, Democratic Republic of the": ['U-17', 'U-19', 'U-21', 'A'] },
+    { "Congo, Republic of the": ['U-17', 'U-19', 'U-21', 'A'] },
+    { "Costa Rica": ['U-17', 'U-19', 'U-21', 'A'] },
+    { "Côte d’Ivoire": ['U-17', 'U-19', 'U-21', 'A'] },
+    { Croatia: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Cuba: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Cyprus: ['U-17', 'U-19', 'U-21', 'A'] },
+    { "Czech Republic": ['U-17', 'U-19', 'U-21', 'A'] },
+    { Denmark: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Djibouti: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Dominica: ['U-17', 'U-19', 'U-21', 'A'] },
+    { "Dominican Republic": ['U-17', 'U-19', 'U-21', 'A'] },
+    { "East Timor (Timor-Leste)": ['U-17', 'U-19', 'U-21', 'A'] },
+    { Ecuador: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Egypt: ['U-17', 'U-19', 'U-21', 'A'] },
+    { "El Salvador": ['U-17', 'U-19', 'U-21', 'A'] },
+    { "Equatorial Guinea": ['U-17', 'U-19', 'U-21', 'A'] },
+    { Eritrea: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Estonia: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Eswatini: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Ethiopia: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Fiji: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Finland: ['U-17', 'U-19', 'U-21', 'A'] },
+    { France: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Gabon: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Georgia: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Germany: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Ghana: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Greece: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Grenada: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Guatemala: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Guinea: ['U-17', 'U-19', 'U-21', 'A'] },
+    { "Guinea-Bissau": ['U-17', 'U-19', 'U-21', 'A'] },
+    { Guyana: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Haiti: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Honduras: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Hungary: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Iceland: ['U-17', 'U-19', 'U-21', 'A'] },
+    { India: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Indonesia: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Iran: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Iraq: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Ireland: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Israel: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Italy: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Jamaica: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Japan: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Jordan: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Kazakhstan: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Kenya: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Kiribati: ['U-17', 'U-19', 'U-21', 'A'] },
+    { "Korea, North": ['U-17', 'U-19', 'U-21', 'A'] },
+    { "Korea, South": ['U-17', 'U-19', 'U-21', 'A'] },
+    { Kosovo: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Kuwait: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Kyrgyzstan: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Laos: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Latvia: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Lebanon: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Lesotho: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Liberia: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Libya: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Liechtenstein: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Lithuania: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Luxembourg: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Madagascar: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Malawi: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Malaysia: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Maldives: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Mali: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Malta: ['U-17', 'U-19', 'U-21', 'A'] },
+    { "Marshall Islands": ['U-17', 'U-19', 'U-21', 'A'] },
+    { Mauritania: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Mauritius: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Mexico: ['U-17', 'U-19', 'U-21', 'A'] },
+    { "Micronesia, Federated States of": ['U-17', 'U-19', 'U-21', 'A'] },
+    { Moldova: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Monaco: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Mongolia: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Montenegro: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Morocco: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Mozambique: ['U-17', 'U-19', 'U-21', 'A'] },
+    { "Myanmar (Burma)": ['U-17', 'U-19', 'U-21', 'A'] },
+    { Namibia: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Nauru: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Nepal: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Netherlands: ['U-17', 'U-19', 'U-21', 'A'] },
+    { "New Zealand": ['U-17', 'U-19', 'U-21', 'A'] },
+    { Nicaragua: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Niger: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Nigeria: ['U-17', 'U-19', 'U-21', 'A'] },
+    { "North Macedonia": ['U-17', 'U-19', 'U-21', 'A'] },
+    { Norway: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Oman: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Pakistan: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Palau: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Panama: ['U-17', 'U-19', 'U-21', 'A'] },
+    { "Papua New Guinea": ['U-17', 'U-19', 'U-21', 'A'] },
+    { Paraguay: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Peru: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Philippines: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Poland: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Portugal: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Qatar: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Romania: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Russia: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Rwanda: ['U-17', 'U-19', 'U-21', 'A'] },
+    { "Saint Kitts and Nevis": ['U-17', 'U-19', 'U-21', 'A'] },
+    { "Saint Lucia": ['U-17', 'U-19', 'U-21', 'A'] },
+    { "Saint Vincent and the Grenadines": ['U-17', 'U-19', 'U-21', 'A'] },
+    { Samoa: ['U-17', 'U-19', 'U-21', 'A'] },
+    { "San Marino": ['U-17', 'U-19', 'U-21', 'A'] },
+    { "Sao Tome and Principe": ['U-17', 'U-19', 'U-21', 'A'] },
+    { "Saudi Arabia": ['U-17', 'U-19', 'U-21', 'A'] },
+    { Senegal: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Serbia: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Seychelles: ['U-17', 'U-19', 'U-21', 'A'] },
+    { "Sierra Leone": ['U-17', 'U-19', 'U-21', 'A'] },
+    { Singapore: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Slovakia: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Slovenia: ['U-17', 'U-19', 'U-21', 'A'] },
+    { "Solomon Islands": ['U-17', 'U-19', 'U-21', 'A'] },
+    { Somalia: ['U-17', 'U-19', 'U-21', 'A'] },
+    { "South Africa": ['U-17', 'U-19', 'U-21', 'A'] },
+    { Spain: ['U-17', 'U-19', 'U-21', 'A'] },
+    { "Sri Lanka": ['U-17', 'U-19', 'U-21', 'A'] },
+    { Sudan: ['U-17', 'U-19', 'U-21', 'A'] },
+    { "South Sudan": ['U-17', 'U-19', 'U-21', 'A'] },
+    { Suriname: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Sweden: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Switzerland: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Syria: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Taiwan: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Tajikistan: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Tanzania: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Thailand: ['U-17', 'U-19', 'U-21', 'A'] },
+    { "The Bahamas": ['U-17', 'U-19', 'U-21', 'A'] },
+    { "The Gambia": ['U-17', 'U-19', 'U-21', 'A'] },
+    { Togo: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Tonga: ['U-17', 'U-19', 'U-21', 'A'] },
+    { "Trinidad and Tobago": ['U-17', 'U-19', 'U-21', 'A'] },
+    { Tunisia: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Turkey: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Turkmenistan: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Tuvalu: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Uganda: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Ukraine: ['U-17', 'U-19', 'U-21', 'A'] },
+    { "United Arab Emirates": ['U-17', 'U-19', 'U-21', 'A'] },
+    { "United Kingdom": ['U-17', 'U-19', 'U-21', 'A'] },
+    { "United States": ['U-17', 'U-19', 'U-21', 'A'] },
+    { Uruguay: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Uzbekistan: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Vanuatu: ['U-17', 'U-19', 'U-21', 'A'] },
+    { "Vatican City": ['U-17', 'U-19', 'U-21', 'A'] },
+    { Venezuela: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Vietnam: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Yemen: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Zambia: ['U-17', 'U-19', 'U-21', 'A'] },
+    { Zimbabwe: ['U-17', 'U-19', 'U-21', 'A'] }
+]
+
 const clubs = ["A Italiano","A Klagenfurt","Aalborg","Aarhus","Abahani","Aberdeen","Abha","AC Milan",
     "Academica","Academico Viseu","Adana Demirspor","Admira","AEK","AEK Larnaca","Aguilas","Ajax",
     "Akhmat Grozny","Akron","Al Ahli (Egy)","Al Ahli (KSA)","Al Ain (UAE)","Al Akhdoud",
@@ -167,6 +368,9 @@ const seedDatabase = async () => {
         await Country.deleteMany({});
         console.log("Existing data for Countries cleared");
 
+        await NationalTeam.deleteMany({});
+        console.log("Existing data for National Teams cleared");
+
         await Club.deleteMany({});
         console.log("Existing data for Clubs cleared");
 
@@ -177,6 +381,20 @@ const seedDatabase = async () => {
             country,
             status: 'Active' 
         }));
+
+        const nationalTeamsData = [];
+
+        for( const team of nationalTeams) {
+            const country = Object.keys(team)[0];
+            const teams = team[country];
+            for (const teamName of teams) {
+                nationalTeamsData.push({
+                    country,
+                    type: teamName,
+                    status: 'Active'
+                });
+            }
+        }
 
         const clubData = clubs.map(club => ({
             name: club,
@@ -189,6 +407,8 @@ const seedDatabase = async () => {
 
         await Country.insertMany(countryData);
         console.log("Database seeded with countries");
+        await NationalTeam.insertMany(nationalTeamsData);
+        console.log("Database seeded with national teams");
         await Club.insertMany(clubData);
         console.log("Database seeded with clubs");
         await Position.insertMany(positionData);

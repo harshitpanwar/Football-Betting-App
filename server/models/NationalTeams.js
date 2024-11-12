@@ -2,14 +2,13 @@ const mongoose = require('mongoose');
 
 const nationalTeamSchema = new mongoose.Schema({
     country: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Country',
-        required: [true, 'Country is required']
+        type: String,
+        required: [true, 'Country is required'],
     },
     type: {
         type: String,
         required: true,
-        enum: ['U17', 'U19', 'U21', 'A']
+        enum: ['U-17', 'U-19', 'U-21', 'A']
     },
     status: {
         type: String,
