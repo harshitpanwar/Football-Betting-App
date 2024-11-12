@@ -74,7 +74,7 @@ const AddPlayer = () => {
     };
 
     if(clubsDataLoading || positionsDataLoading || countriesDataLoading) {
-        return <div>Loading...</div>
+        return <Loader />
     }
 
     return (
