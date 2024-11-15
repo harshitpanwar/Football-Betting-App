@@ -50,7 +50,7 @@ module.exports = {
 
     async fetchAllActive(req, res) {
         try {
-            const clubs = await Club.find({ status: 'Active' });
+            const clubs = await Club.find({ status: 'Active' }).sort('name');
             return res.status(200).send(clubs);
         } catch (error) {
             return res.status(400).send(error);

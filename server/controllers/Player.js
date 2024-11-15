@@ -6,7 +6,7 @@ module.exports = {
         
         const { name, dateOfBirth, position, currentClub, country, nationalTeams, previousClubs, rating } = req.body;
 
-        if (!name || !dateOfBirth || !position || !currentClub || !country || !rating) {
+        if (!name || !dateOfBirth || !position || !currentClub || !country) {
             return res.status(400).json({ msg: 'Please enter all fields' });
         }
 

@@ -7,20 +7,23 @@ import { savePlayerData } from '../api/Player';
 import Loader from './Loader/Loader';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
+import Select from 'react-select';
+import { useToast } from '../hooks/use-toast';
 
 const AddPlayer = () => {
 
-        const [player, setPlayer] = useState({
-            name: '',
-            dateOfBirth: '',
-            position: '',
-            currentClub: { club: '', from: '' },
-            country: '',
-            nationalTeams: [{ name: '', from: '', type: '', teams: [], disabled: true }],
-            previousClubs: [{ name: '', from: '', to: '' }],
-            rating: ''
-        });
+    const { toast } = useToast()
 
+    const [player, setPlayer] = useState({
+        name: '',
+        dateOfBirth: '',
+        position: '',
+        currentClub: { club: '', from: '' },
+        country: '',
+        nationalTeams: [{ name: '', from: '', type: '', teams: [], disabled: true }],
+        previousClubs: [{ name: '', from: '', to: '' }],
+        rating: ''
+    });
 
     const { isLoading: clubsDataLoading, error: clubsDataError, data: clubsData } = useQuery({
         queryKey: ['clubs'],
@@ -38,7 +41,20 @@ const AddPlayer = () => {
     });
 
     const savePlayerDataMutation = useMutation({
-        mutationFn: savePlayerData
+        mutationFn: savePlayerData,
+        onError: (error) => {
+            toast({
+                variant: "destructive",
+                title: "Uh oh! Something went wrong.",
+                description: error.message,
+              })
+      
+        },
+        onSuccess: (data) => {
+            toast({
+                description: "Player saved successfully",
+              })
+        }
     })
 
     const fetchAllNationalTeams = async (country, index) => {
@@ -72,9 +88,11 @@ const AddPlayer = () => {
         } else {
             setPlayer({ ...player, [field]: e.target.value });
         }
+        console.log(player)
     };
     const handleClubInputChange = (e, field, subfield) => {
         setPlayer({ ...player, [field]: { ...player[field], [subfield]: e.target.value } });
+        console.log(player)
     };
 
     const handleSubmit = (e) => {
@@ -87,7 +105,7 @@ const AddPlayer = () => {
     }
 
     return (
-        <form onSubmit={handleSubmit} className="max-w-2xl mx-auto p-6 bg-white shadow-md rounded-lg space-y-4">
+        <form onSubmit={handleSubmit} className="mx-10 p-6 bg-white shadow-md rounded-lg space-y-4">
             <div className="flex flex-col">
                 <label className="font-semibold text-gray-700">Name:</label>
                 <Input
@@ -110,31 +128,54 @@ const AddPlayer = () => {
             </div>
             <div className="flex flex-col">
                 <label className="font-semibold text-gray-700">Position:</label>
-                <select
-                    value={player.position}
-                    onChange={(e) => handleInputChange(e, 'position')}
-                    className="border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-                    required
-                >
-                    <option value="">Select Position</option>
-                    {positionsData.map(position => (
-                        <option key={position._id} value={position._id}>{position.position}</option>
-                    ))}
-                </select>
+                <Select
+                    value={{value:
+                        player.position
+                            ? positionsData.find(position => position._id === player.position)
+                            : null,
+                            label: player.position? positionsData.find(position => position._id === player.position).position : null
+                    }}
+                    onChange={(selectedOption) => handleInputChange(
+                        { target: { value: selectedOption.value } },
+                        'position'
+                    )}
+                    options={positionsData.map(position => ({
+                        label: position.position,
+                        value: position._id,
+                    }))}
+                    className="w-full"
+                    placeholder="Select Position"
+                    isSearchable
+                />
             </div>
             <div className="flex flex-col">
                 <label className="font-semibold text-gray-700">Current Club:</label>
-                <select
-                    value={player.currentClub.club}
-                    onChange={(e) => handleClubInputChange(e, 'currentClub', 'club')}
-                    className="border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                <Select
+                    value={{
+                        value:
+                        player.currentClub.club
+                            ? clubsData.find(club => club._id === player.currentClub.club)
+                            : null,
+                    
+                        label: player.currentClub.club?
+                            clubsData.find(club => club._id === player.currentClub.club).name
+                            : null
+                    }}
+                    onChange={(selectedOption) => handleClubInputChange(
+                        { target: { value: selectedOption.value } },
+                        'currentClub',
+                        'club'
+                    )}
+                    options={clubsData.map(club => ({
+                        label: club.name,
+                        value: club._id,
+                    }))}
+                    className="w-full"
+                    placeholder="Select Club"
+                    isSearchable
                     required
-                >
-                    <option value="">Select Club</option>
-                    {clubsData.map(club => (
-                        <option key={club._id} value={club._id}>{club.name}</option>
-                    ))}
-                </select>
+                />
+
                 <label className="font-semibold text-gray-700 mt-2">From:</label>
                 <Input
                     type="date"
@@ -146,56 +187,71 @@ const AddPlayer = () => {
             </div>
             <div className="flex flex-col">
                 <label className="font-semibold text-gray-700">Country:</label>
-                <select
-                    value={player.country}
-                    onChange={(e) => handleInputChange(e, 'country')}
-                    className="border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                <Select
+                    value={{
+                        value: player.country
+                            ? countriesData.find(country => country._id === player.country)
+                            : null,
+                        label: player.country
+                            ? countriesData.find(country => country._id === player.country).country
+                            : null
+                    }}
+                    onChange={(selectedOption) => handleInputChange(
+                        { target: { value: selectedOption.value } },
+                        'country'
+                    )}
+                    options={countriesData.map(country => ({
+                        label: country.country,
+                        value: country._id,
+                    }))}
+                    className="w-full"
+                    placeholder="Select Country"
+                    isSearchable
                     required
-                >
-                    <option value="">Select Country</option>
-                    {countriesData.map(country => (
-                        <option key={country._id} value={country._id}>{country.country}</option>
-                    ))}
-                </select>
+                />
             </div>
             <div>
                 <label className="font-semibold text-gray-700">National Teams:</label>
                 {player.nationalTeams.map((team, index) => (
                     <div key={index} className="flex items-center space-x-2 mb-2">
-                        <select
-                            value={team.name}
-                            onChange={(e) => {
-                                handleInputChange(e, 'nationalTeams', index, 'name')
-                                fetchAllNationalTeams(team.name, index);
+                        <Select
+                            value={{ label: team.name, value: team.name }}
+                            onChange={(selectedOption) => {
+                                handleInputChange(
+                                    { target: { value: selectedOption.value } },
+                                    'nationalTeams',
+                                    index,
+                                    'name'
+                                );
+                                fetchAllNationalTeams(selectedOption.value, index);
                             }}
-                            className="border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-                            required
-                        >
-                            <option value="">Select National Team</option>
-                            {countriesData.map(country => (
-                                <option key={country._id} value={country.name}>{country.country}</option>
-                            ))}
-                        </select>
+                            options={countriesData.map(country => ({
+                                label: country.country,
+                                value: country.country,
+                            }))}
+                            className="w-full"
+                            placeholder="Select National Team"
+                            isSearchable
+                        />
+                        
                         <select
                             value={team.type}
                             onChange={(e) => handleInputChange(e, 'nationalTeams', index, 'type')}
                             className="border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-                            required
                         >
                             <option value="" disabled={team.disabled}>Select National Team Type</option>
-                            {
-                                team.teams.map(type => (
-                                    <option key={type} value={type}>{type}</option>
-                                ))
-                            }
+                            {team.teams.map(type => (
+                                <option key={type} value={type}>{type}</option>
+                            ))}
                         </select>
+
+                        {/* From Date Input */}
                         <label className="font-semibold text-gray-700">From:</label>
                         <Input
                             type="date"
                             value={team.from}
                             onChange={(e) => handleInputChange(e, 'nationalTeams', index, 'from')}
                             className="border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-                            required
                         />
                     </div>
                 ))}
@@ -211,17 +267,33 @@ const AddPlayer = () => {
                 <label className="font-semibold text-gray-700">Previous Clubs:</label>
                 {player.previousClubs.map((club, index) => (
                     <div key={index} className="flex items-center space-x-2 mb-2">
-                        <select
-                            value={club.club}
-                            onChange={(e) => handleInputChange(e, 'previousClubs', index, 'name')}
-                            className="border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        <Select
+                            value={{
+                                value: player.previousClubs[index].name
+                                    ? clubsData.find(club => club._id === player.previousClubs[index].name)
+                                    : null,
+                                label: player.previousClubs[index].name
+                                    ? clubsData.find(club => club._id === player.previousClubs[index].name).name
+                                    : null
+                                }}
+                            onChange={(selectedOption) =>
+                                handleInputChange(
+                                    { target: { value: selectedOption.value } },
+                                    'previousClubs',
+                                    index,
+                                    'name'
+                                )
+                            }
+                            options={clubsData.map(c => ({
+                                label: c.name,
+                                value: c._id,
+                            }))}
+                            className="w-full"
+                            placeholder="Select Club"
+                            isSearchable
                             required
-                        >
-                            <option value="">Select Club</option>
-                            {clubsData.map(c => (
-                                <option key={c._id} value={c._id}>{c.name}</option>
-                            ))}
-                        </select>
+                        />
+
                         <label className="font-semibold text-gray-700">From:</label>
                         <Input
                             type="date"
@@ -248,7 +320,7 @@ const AddPlayer = () => {
                     Add Previous Club
                 </Button>
             </div>
-            <div className="flex flex-col">
+            {/* <div className="flex flex-col">
                 <label className="font-semibold text-gray-700">Rating:</label>
                 <Input
                     type="number"
@@ -259,16 +331,16 @@ const AddPlayer = () => {
                     className="border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
                     required
                 />
-            </div>
+            </div> */}
             <Button
                 type="submit"
                 className="w-full px-4 py-2 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400"
             >
                 Save Player
             </Button>
-            {savePlayerDataMutation.isError && <div>Error saving player</div>}
+
             {savePlayerDataMutation.isPending && <div>Saving player...</div>}
-            {savePlayerDataMutation.isSuccess && <div>Player saved successfully</div>}
+
         </form>
     );
 }

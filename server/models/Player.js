@@ -7,8 +7,8 @@ const ClubSchema = new mongoose.Schema({
 });
 
 const NationalTeamSchema = new mongoose.Schema({
-    name: { type: String, required: true },
-    from: { type: Date, required: true },
+    name: { type: String },
+    from: { type: Date },
     type: { type: String }
 });
 
